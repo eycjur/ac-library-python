@@ -3,10 +3,55 @@ import typing
 import atcoder._math
 
 def pow_mod(x: int, n: int, m: int) -> int:
+    """(x^n) % m を効率的に計算します。
+
+    Args:
+        x (int): 基数。
+        n (int): 指数（非負整数）。
+        m (int): 剰余を取る法（正の整数）。
+
+    Returns:
+        int: (x^n) % m の結果。
+
+    Examples:
+        >>> pow_mod(2, 10, 1000)
+        24  # 2^10 = 1024, 1024 % 1000 = 24
+        >>> pow_mod(3, 7, 13)
+        3   # 3^7 = 2187, 2187 % 13 = 3
+
+    Notes:
+        - n は 0 以上でなければなりません。
+        - m は 1 以上の正の整数である必要があります。
+
+    計算量:
+        O(log n)
+    """
     return pow(x, n, m)
 
 
 def inv_mod(x: int, m: int) -> int:
+    """法mにおけるxの乗法逆元y(x * y ≡ 1 (mod m))を計算します。
+
+    Args:
+        x (int): 逆元を計算する整数。
+        m (int): 法（正の整数）。
+
+    Returns:
+        int: x の法 m における乗法逆元。
+
+    Examples:
+        >>> inv_mod(3, 7)
+        5  # 3 * 5 ≡ 1 (mod 7)
+        >>> inv_mod(10, 17)
+        12  # 10 * 12 ≡ 1 (mod 17)
+
+    Notes:
+        - 入力の x と m は互いに素でなければなりません (gcd(x, m) = 1)。
+        - 計算は拡張ユークリッド法に基づいています。
+
+    計算量:
+        O(log m)
+    """
     assert 1 <= m
 
     z = atcoder._math._inv_gcd(x, m)

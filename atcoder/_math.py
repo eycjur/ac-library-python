@@ -2,11 +2,31 @@ import typing
 
 
 def _is_prime(n: int) -> bool:
-    '''
+    """与えられた整数nが素数であるかどうかを判定します。
+
+    この実装は、Miller-Rabin 素数判定法を基にしており、
+    機械語サイズの整数（通常 64 ビット整数）に対して高速かつ正確に動作します。
+
     Reference:
-    M. Forisek and J. Jancina,
-    Fast Primality Testing for Integers That Fit into a Machine Word
-    '''
+        M. Forisek and J. Jancina,
+        "Fast Primality Testing for Integers That Fit into a Machine Word"
+
+    Args:
+        n (int): 素数判定を行う整数。
+
+    Returns:
+        bool: 素数であれば True、それ以外は False。
+
+    Examples:
+        >>> _is_prime(2)
+        True
+        >>> _is_prime(15)
+        False
+        >>> _is_prime(61)
+        True
+        >>> _is_prime(97)
+        True
+    """
 
     if n <= 1:
         return False
@@ -30,7 +50,28 @@ def _is_prime(n: int) -> bool:
     return True
 
 
-def _inv_gcd(a: int, b: int) -> typing.Tuple[int, int]:
+def _inv_gcd(a: int, b: int) -> tuple[int, int]:
+    """拡張ユークリッドの互除法を用いて、最大公約数と逆元を計算します。
+
+    Args:
+        a (int): GCD と逆元を計算する整数。
+        b (int): 正の整数（法）。
+
+    Returns:
+        tuple[int, int]: (GCD, 逆元) を返します。
+            - GCD: a と b の最大公約数。
+            - 逆元: a * x ≡ GCD (mod b) を満たす x。
+
+    Examples:
+        >>> _inv_gcd(10, 6)
+        (2, 2)  # GCD = 2, 10 * 2 ≡ 2 (mod 6)
+        >>> _inv_gcd(3, 7)
+        (1, 5)  # GCD = 1, 3 * 5 ≡ 1 (mod 7)
+
+    Notes:
+        - aとbが互いに素の場合、GCDは1となり、aの逆元を計算できます。
+        - a * x - b * ? = GCDという一次不定方程式の解となります。
+    """
     a %= b
     if a == 0:
         return (b, 0)
@@ -66,6 +107,7 @@ def _inv_gcd(a: int, b: int) -> typing.Tuple[int, int]:
 
 
 def _primitive_root(m: int) -> int:
+    """与えられた整数mに対する原始根(primitive root)を計算します。"""
     if m == 2:
         return 1
     if m == 167772161:
