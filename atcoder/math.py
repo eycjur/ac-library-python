@@ -3,7 +3,9 @@ import typing
 import atcoder._math
 
 def pow_mod(x: int, n: int, m: int) -> int:
-    """(x^n) % m を効率的に計算します。
+    """AtCoderでは利用できません！！！
+
+    (x^n) % m を効率的に計算します。
 
     Args:
         x (int): 基数。

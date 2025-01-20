@@ -16,9 +16,9 @@ class LazySegTree:
     Args:
         op (Callable[[Any, Any], Any]): モノイドの二項演算を行う関数(min, operator.add など)
         e (Any): モノイドの単位元(例：区間和なら 0、区間最小値なら正の無限大)
-        mapping (Callable[[Any, Any], Any]): 写像を適用する関数。
-        composition (Callable[[Any, Any], Any]): 写像の合成を行う関数。
-        id_ (Any): 写像の恒等写像。
+        mapping (Callable[[Any, Any], Any]): 写像を適用する関数(ex. operator.add)
+        composition (Callable[[Any, Any], Any]): 写像の合成を行う関数(ex. operator.add)
+        id_ (Any): 写像の単位元(例：加算なら 0、乗算なら 1)
         v (Union[int, List[Any]]): 初期化用の配列または配列の長さ。
             - 配列の場合、その内容が初期値となります。
             - 整数の場合、長さがその整数で単位元で初期化された配列として扱います。
@@ -28,7 +28,7 @@ class LazySegTree:
         _e (Any): モノイドの単位元。
         _mapping (Callable): 写像の適用関数。
         _composition (Callable): 写像の合成関数。
-        _id (Any): 恒等写像。
+        _id (Any): 写像の単位元。
         _n (int): 配列の長さ。
         _log (int): セグメントツリーの高さ。
         _size (int): セグメントツリーのノード数(2の冪乗)=葉ノードの開始位置。
@@ -87,13 +87,14 @@ class LazySegTree:
     """
 
     def __init__(
-            self,
-            op: typing.Callable[[typing.Any, typing.Any], typing.Any],
-            e: typing.Any,
-            mapping: typing.Callable[[typing.Any, typing.Any], typing.Any],
-            composition: typing.Callable[[typing.Any, typing.Any], typing.Any],
-            id_: typing.Any,
-            v: typing.Union[int, typing.List[typing.Any]]) -> None:
+        self,
+        op: typing.Callable[[typing.Any, typing.Any], typing.Any],
+        e: typing.Any,
+        mapping: typing.Callable[[typing.Any, typing.Any], typing.Any],
+        composition: typing.Callable[[typing.Any, typing.Any], typing.Any],
+        id_: typing.Any,
+        v: typing.Union[int, typing.List[typing.Any]]
+    ) -> None:
         self._op = op
         self._e = e
         self._mapping = mapping
