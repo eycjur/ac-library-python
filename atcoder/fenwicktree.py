@@ -15,6 +15,12 @@ class FenwickTree:
         _n (int): 配列の長さ。
         data (List[int]): 内部的に管理されるフェニック木の配列。
 
+    Methods:
+        add(p, x):
+            指定した位置に値を加算します。
+        sum(left, right):
+            [left, right) の区間の総和を計算します。
+
     Examples:
         >>> fw = FenwickTree(5)  # 長さ5のフェニック木を作成
         >>> fw

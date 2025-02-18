@@ -157,12 +157,25 @@ def _sa_is(s: typing.List[int], upper: int) -> typing.List[int]:
 
 def suffix_array(s: typing.Union[str, typing.List[int]],
                  upper: typing.Optional[int] = None) -> typing.List[int]:
-    '''
-    SA-IS, linear-time suffix array construction
-    Reference:
-    G. Nong, S. Zhang, and W. H. Chan,
-    Two Efficient Algorithms for Linear Time Suffix Array Construction
-    '''
+    """Suffix Array(s[i:]の接尾辞配列をソートしたもの)
+
+    Args:
+        s (Union[str, List[int]]): 文字列
+        upper (Optional[int], optional): sの最大値. sがlist[int]の場合のみ有効. Defaults to None.
+
+    Returns:
+        List[int]: suffix array
+
+    Example:
+        >>> s = "abca"
+        >>> suffix_array(s)
+        [3, 0, 1, 2]
+        # iはs[i:]でこれをソートしたもの
+        # 0番目: 3=a
+        # 1番目: 0=abca
+        # 2番目: 1=bca
+        # 3番目: 2=ca
+    """
 
     if isinstance(s, str):
         return _sa_is([ord(c) for c in s], 255)
@@ -191,14 +204,30 @@ def suffix_array(s: typing.Union[str, typing.List[int]],
 
 def lcp_array(s: typing.Union[str, typing.List[int]],
               sa: typing.List[int]) -> typing.List[int]:
-    '''
-    Longest-Common-Prefix computation
-    Reference:
-    T. Kasai, G. Lee, H. Arimura, S. Arikawa, and K. Park,
-    Linear-Time Longest-Common-Prefix Computation in Suffix Arrays and Its
-    Applications
-    '''
+    """LCP配列(suffix_arrayの隣接要素の最長共通接頭辞の長さ)
 
+    Args:
+        s (Union[str, List[int]]): 文字列
+        sa (List[int]): suffix array
+
+    Returns:
+        List[int]: LCP配列
+
+    Example:
+        >>> s = "ababac"
+        >>> sa = suffix_array(s)
+        >>> sa
+        [0, 2, 4, 1, 3, 5]
+        >>> lcp_array(s, sa)
+        [3, 1, 0, 2, 0]
+        # iはsa[i:]とsa[i+1:]の最長共通接頭辞の長さ
+        # s[0:] = "ababac"
+        # s[2:] = "abac"   -> s[0:]とs[2:]の最長共通接頭辞はaba
+        # s[4:] = "ac"     -> s[2:]とs[4:]の最長共通接頭辞はa
+        # s[1:] = "babac"  -> s[4:]とs[1:]の最長共通接頭辞は
+        # s[3:] = "bac"    -> s[1:]とs[3:]の最長共通接頭辞はba
+        # s[5:] = "c"      -> s[3:]とs[5:]の最長共通接頭辞は
+    """
     if isinstance(s, str):
         s = [ord(c) for c in s]
 
@@ -227,14 +256,24 @@ def lcp_array(s: typing.Union[str, typing.List[int]],
 
 
 def z_algorithm(s: typing.Union[str, typing.List[int]]) -> typing.List[int]:
-    '''
-    Z algorithm
-    Reference:
-    D. Gusfield,
-    Algorithms on Strings, Trees, and Sequences: Computer Science and
-    Computational Biology
-    '''
+    """Zアルゴリズム(SとS[i:]の最長共通接頭辞の長さをリストで返す)
 
+    Args:
+        s (Union[str, List[int]]): 文字列
+
+    Returns:
+        List[int]: Z配列
+
+    Example:
+        >>> z_algorithm("ababac")
+        [6, 0, 3, 0, 1, 0]
+        # ababacとababacの最長共通接頭辞は6
+        # ababacと babacの最長共通接頭辞は0
+        # ababacと  abacの最長共通接頭辞は3
+        # ababacと   bacの最長共通接頭辞は0
+        # ababacと    acの最長共通接頭辞は1
+        # ababacと     cの最長共通接頭辞は0
+    """
     if isinstance(s, str):
         s = [ord(c) for c in s]
 
