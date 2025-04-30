@@ -258,6 +258,8 @@ def lcp_array(s: typing.Union[str, typing.List[int]],
 def z_algorithm(s: typing.Union[str, typing.List[int]]) -> typing.List[int]:
     """Zアルゴリズム(SとS[i:]の最長共通接頭辞の長さをリストで返す)
 
+    cf. https://www.youtube.com/watch?v=f6ct5PQHqM0
+
     Args:
         s (Union[str, List[int]]): 文字列
 
@@ -281,13 +283,18 @@ def z_algorithm(s: typing.Union[str, typing.List[int]]) -> typing.List[int]:
     if n == 0:
         return []
 
-    z = [0] * n
-    j = 0
+    z = [0] * n  # 先頭との最長共通接頭辞lcpの配列
+    j = 0  # これまで探索した中で、最長共通接頭辞の最後の位置が最大となる開始位置
+    # S[:z[j]] = S[j:j + z[j]]なので、j + z[j]以下の範囲でlcp(i)=lcp(i-j)となることを利用する
     for i in range(1, n):
-        z[i] = 0 if j + z[j] <= i else min(j + z[j] - i, z[i - j])
-        while i + z[i] < n and s[z[i]] == s[i + z[i]]:
+        # z[i] = 0 if j + z[j] <= i else min(j + z[j] - i, z[i - j])
+        if j + z[j] <= i:  # iが未探索範囲の場合（j + z[j]: これまで探索した中で、最長共通接頭辞の最後の位置）
+            z[i] = 0
+        else:
+            z[i] = min(j + z[j] - i, z[i - j])  # j + z[j]以下の範囲でlcp(i-j)の結果を利用
+        while i + z[i] < n and s[z[i]] == s[i + z[i]]:  # 効率化なしの2重ループの場合と同じ
             z[i] += 1
-        if j + z[j] < i + z[i]:
+        if j + z[j] < i + z[i]:  # i番目の接頭辞が長い場合は更新
             j = i
     z[0] = n
 
